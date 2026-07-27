@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AmphionASR: A Unified SpeechLLM for Context-Aware Speech Recognition</title>
+  <meta name="description" content="AmphionASR is a unified SpeechLLM built on Qwen3-ASR-1.7B supporting general, hotword-conditioned, target-speaker, degradation-robust, and whispered-speech ASR." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- ===================== Hero ===================== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-logo">
+        <!-- TODO: replace with assets/logo.png -->
+        <div class="logo-placeholder">Amphion<span>ASR</span></div>
+      </div>
+      <h1 class="hero-title">AmphionASR</h1>
+      <p class="hero-subtitle">A Unified SpeechLLM for Context-Aware Speech Recognition</p>
+      <p class="hero-meta">
+        <span class="badge">Built on Qwen3-ASR-1.7B</span>
+        <span class="badge">2.0B parameters</span>
+        <span class="badge">Mandarin &amp; English</span>
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#TODO-paper" target="_blank" rel="noopener">Paper</a>
+        <a class="btn btn-secondary" href="#TODO-code" target="_blank" rel="noopener">Code</a>
+        <a class="btn btn-secondary" href="#TODO-model" target="_blank" rel="noopener">Model</a>
+        <a class="btn btn-ghost" href="#capabilities">View Capabilities ↓</a>
+      </div>
+      <!-- TODO: replace with teaser figure from paper (figures/cap.png) -->
+      <div class="hero-teaser">
+        <div class="teaser-placeholder">
+          <span>Teaser figure: Four recognition capabilities of AmphionASR</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== Overview ===================== -->
+  <section class="section overview" id="overview">
+    <div class="container">
+      <h2 class="section-title">Overview</h2>
+      <p class="section-lead">
+        AmphionASR is a SpeechLLM that supports multiple conditioned recognition
+        settings through a shared model and task-specific inputs. A 16&nbsp;kHz
+        waveform is encoded by the <strong>AuT encoder</strong> into the LLM's
+        embedding space; the text branch tokenises the instruction and optional
+        hotword lines. A parallel <strong>retrieval</strong> branch selects a
+        top-<em>K</em> hotword subset from a large candidate vocabulary and
+        inserts it into the prompt line before a single ASR forward pass.
+      </p>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value">2.0B</div>
+          <div class="stat-label">Total Parameters</div>
+          <div class="stat-detail">1.7B LLM + 300M AuT encoder + 2.6M retrieval adapters</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">94%+</div>
+          <div class="stat-label">Recall@50 (Hotword Retrieval)</div>
+          <div class="stat-detail">On CommonVoice ZH/EN hotword splits</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">55% / 37%</div>
+          <div class="stat-label">Entity Error Reduction</div>
+          <div class="stat-detail">Mandarin / English on GigaSpeechBench</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">1.37 / 3.25 ms</div>
+          <div class="stat-label">Online Retrieval Overhead</div>
+          <div class="stat-detail">Median, English / Mandarin, single-request steady-state</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Capabilities ===================== -->
+  <section class="section capabilities" id="capabilities">
+    <div class="container">
+      <h2 class="section-title">Capabilities</h2>
+      <p class="section-lead">
+        AmphionASR unifies five recognition settings within one model, differing
+        only in their instructions and optional reference inputs.
+      </p>
+
+      <!-- Capability tabs -->
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" data-tab="general">General ASR</button>
+        <button class="tab" role="tab" data-tab="hotword">Hotword ASR</button>
+        <button class="tab" role="tab" data-tab="tsasr">Target-Speaker ASR</button>
+        <button class="tab" role="tab" data-tab="degradation">Degradation-Robust</button>
+        <button class="tab" role="tab" data-tab="whisper">Whispered-Speech</button>
+      </div>
+
+      <!-- General ASR -->
+      <div class="tab-panel active" data-panel="general">
+        <div class="panel-grid">
+          <div class="panel-info">
+            <h3>General ASR</h3>
+            <p class="prompt-template">
+              <code>Transcribe the following audio.{speech}</code>
+            </p>
+            <p>
+              Standard unconditioned transcription. General transcription is
+              retained as a retention check across multiple standard ASR
+              benchmarks (AIShell-1/2, LibriSpeech, GigaSpeech, CommonVoice,
+              WenetSpeech) rather than as a state-of-the-art claim.
+            </p>
+            <div class="example-controls">
+              <select class="example-select" data-capability="general">
+                <option value="">Loading examples...</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-demo">
+            <div class="audio-player">
+              <div class="audio-placeholder">No audio loaded</div>
+              <audio controls preload="metadata"></audio>
+            </div>
+            <div class="transcript-box">
+              <div class="transcript-label">Transcript</div>
+              <div class="transcript-text" data-field="transcript">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotword ASR -->
+      <div class="tab-panel" data-panel="hotword">
+        <div class="panel-grid">
+          <div class="panel-info">
+            <h3>Hotword-Conditioned ASR</h3>
+            <p class="prompt-template">
+              <code>Transcribe the following audio.[Hotwords:...].{speech}</code>
+            </p>
+            <p>
+              A fine-grained dual encoder retrieves a top-<em>K</em> subset from
+              a large candidate vocabulary before decoding. The selected
+              hotwords are inserted into the prompt line, biasing the decoder
+              toward rare or domain-specific entities without any
+              architectural change.
+            </p>
+            <div class="example-controls">
+              <select class="example-select" data-capability="hotword">
+                <option value="">Loading examples...</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-demo">
+            <div class="audio-player">
+              <div class="audio-placeholder">No audio loaded</div>
+              <audio controls preload="metadata"></audio>
+            </div>
+            <div class="retrieved-hotwords">
+              <div class="transcript-label">Retrieved Top-K Hotwords</div>
+              <div class="hotword-chips" data-field="hotwords">—</div>
+            </div>
+            <div class="transcript-box compare">
+              <div class="compare-col">
+                <div class="transcript-label">Without Hotwords</div>
+                <div class="transcript-text" data-field="without_hotword">—</div>
+              </div>
+              <div class="compare-col highlight">
+                <div class="transcript-label">With Hotwords</div>
+                <div class="transcript-text" data-field="with_hotword">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Target-Speaker ASR -->
+      <div class="tab-panel" data-panel="tsasr">
+        <div class="panel-grid">
+          <div class="panel-info">
+            <h3>Target-Speaker ASR (TS-ASR)</h3>
+            <p class="prompt-template">
+              <code>Given the speaker's voice:{enroll} Transcribe what this speaker says in the following audio.{speech}</code>
+            </p>
+            <p>
+              Given a short enrollment utterance of a target speaker, the model
+              transcribes only that speaker's content from overlapping speech,
+              rather than concatenating all talkers. Both audio segments share
+              the same AuT encoder path and reach the LLM as two ordered
+              audio-embedding spans.
+            </p>
+            <div class="example-controls">
+              <select class="example-select" data-capability="tsasr">
+                <option value="">Loading examples...</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-demo">
+            <div class="dual-audio">
+              <div class="audio-player small">
+                <div class="audio-label">Enrollment (target speaker)</div>
+                <div class="audio-placeholder">No audio loaded</div>
+                <audio controls preload="metadata" data-audio="enroll"></audio>
+              </div>
+              <div class="audio-player small">
+                <div class="audio-label">Mixture to transcribe</div>
+                <div class="audio-placeholder">No audio loaded</div>
+                <audio controls preload="metadata" data-audio="mixture"></audio>
+              </div>
+            </div>
+            <div class="transcript-box">
+              <div class="transcript-label">Target Speaker Transcript</div>
+              <div class="transcript-text" data-field="transcript">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Degradation-Robust ASR -->
+      <div class="tab-panel" data-panel="degradation">
+        <div class="panel-grid">
+          <div class="panel-info">
+            <h3>Degradation-Robust ASR</h3>
+            <p class="prompt-template">
+              <code>Transcribe the following audio.{speech}</code>
+            </p>
+            <p>
+              Handles real-world capture conditions such as far-field pickup,
+              additive noise, reverberation, obstruction, echo, recording
+              coloration, electronic distortion, and transmission dropout.
+              Evaluated on Voice-in-the-Wild-Bench (16 subsets, 5,000 clips);
+              AmphionASR records the lowest WER on 8 of 16 degradation subsets.
+            </p>
+            <div class="example-controls">
+              <select class="example-select" data-capability="degradation">
+                <option value="">Loading examples...</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-demo">
+            <div class="audio-player">
+              <div class="audio-placeholder">No audio loaded</div>
+              <audio controls preload="metadata"></audio>
+            </div>
+            <div class="degradation-tag" data-field="degradation_type">
+              <span class="transcript-label">Degradation Type:</span>
+              <span class="tag">—</span>
+            </div>
+            <div class="transcript-box">
+              <div class="transcript-label">Robust Transcript</div>
+              <div class="transcript-text" data-field="transcript">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Whispered-Speech ASR -->
+      <div class="tab-panel" data-panel="whisper">
+        <div class="panel-grid">
+          <div class="panel-info">
+            <h3>Whispered-Speech ASR</h3>
+            <p class="prompt-template">
+              <code>Transcribe the following whispered audio.{speech}</code>
+            </p>
+            <p>
+              Transcribes atypical, low-energy whispered phonation that deviates
+              from normal speech. AmphionASR obtains the lowest error on both
+              the Mandarin wEar (0.58% CER) and English WTIMIT (6.11% WER)
+              whispered-speech tests.
+            </p>
+            <div class="example-controls">
+              <select class="example-select" data-capability="whisper">
+                <option value="">Loading examples...</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel-demo">
+            <div class="audio-player">
+              <div class="audio-placeholder">No audio loaded</div>
+              <audio controls preload="metadata"></audio>
+            </div>
+            <div class="transcript-box">
+              <div class="transcript-label">Transcript</div>
+              <div class="transcript-text" data-field="transcript">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== Architecture ===================== -->
+  <section class="section architecture" id="architecture">
+    <div class="container">
+      <h2 class="section-title">Architecture</h2>
+      <p class="section-lead">
+        An AuT audio encoder feeds frame embeddings directly into the LLM. At
+        inference time, a hotword retriever selects a top-<em>K</em> subset from
+        a large candidate vocabulary and inserts it into the prompt before
+        decoding.
+      </p>
+      <!-- TODO: replace with assets/figures/architecture.svg or .png -->
+      <div class="figure-placeholder">
+        <span>Architecture figure (figures/architecture.pdf)</span>
+      </div>
+      <div class="arch-components">
+        <div class="arch-card">
+          <h4>AuT Encoder</h4>
+          <div class="arch-meta">300M params</div>
+          <p>Qwen3-ASR 24-layer AuT encoder. Log-mel front-end (128 bins, 10ms hop), convolutional sub-sampler, Whisper-style pre-LN Transformer into 2048-d frame embeddings at 12.5 Hz.</p>
+        </div>
+        <div class="arch-card">
+          <h4>LLM</h4>
+          <div class="arch-meta">1.7B params</div>
+          <p>Initialised from Qwen3-ASR-1.7B text backbone. 28-layer decoder-only Transformer, 2048-d hidden states, 64K native context length.</p>
+        </div>
+        <div class="arch-card">
+          <h4>Retrieval Adapters</h4>
+          <div class="arch-meta">2.6M params</div>
+          <p>Two small MLP adapters mapping frozen AuT frame embeddings and frozen LLM token embeddings into a shared 512-d space. Max-over-time scoring selects top-K hotwords.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BibTeX ===================== -->
+  <section class="section bibtex" id="bibtex">
+    <div class="container narrow">
+      <h2 class="section-title">Citation</h2>
+      <pre class="bibtex-code">@misc{amphionasr2026,
+  title     = {AmphionASR: A Unified SpeechLLM for Context-Aware Speech Recognition},
+  author    = {{Amphion ASR Team}},
+  year      = {2026},
+  note      = {Technical report},
+}</pre>
+      <button class="btn btn-secondary copy-btn" data-copy="bibtex-code">Copy BibTeX</button>
+    </div>
+  </section>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-text">
+        AmphionASR — A Unified SpeechLLM for Context-Aware Speech Recognition
+      </p>
+      <p class="footer-meta">
+        <!-- TODO: fill in actual links -->
+        <a href="#TODO-paper">Paper</a> ·
+        <a href="#TODO-code">Code</a> ·
+        <a href="#TODO-model">Model</a> ·
+        <a href="#TODO-arxiv">arXiv</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

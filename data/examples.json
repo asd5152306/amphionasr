@@ -1,0 +1,66 @@
+{
+  "capabilities": {
+    "general": [
+      {
+        "title": "TODO: Example 1 (Mandarin)",
+        "audio_url": "",
+        "transcript": ""
+      },
+      {
+        "title": "TODO: Example 2 (English)",
+        "audio_url": "",
+        "transcript": ""
+      }
+    ],
+    "hotword": [
+      {
+        "title": "TODO: Hotword Example 1 (Mandarin)",
+        "audio_url": "",
+        "without_hotword": "",
+        "with_hotword": "",
+        "hotwords": []
+      },
+      {
+        "title": "TODO: Hotword Example 2 (English)",
+        "audio_url": "",
+        "without_hotword": "",
+        "with_hotword": "",
+        "hotwords": []
+      }
+    ],
+    "tsasr": [
+      {
+        "title": "TODO: TS-ASR Example 1 (2-speaker mix)",
+        "enroll_audio_url": "",
+        "mixture_audio_url": "",
+        "transcript": ""
+      }
+    ],
+    "degradation": [
+      {
+        "title": "TODO: Degradation Example 1 (far-field)",
+        "audio_url": "",
+        "degradation_type": "",
+        "transcript": ""
+      },
+      {
+        "title": "TODO: Degradation Example 2 (additive noise)",
+        "audio_url": "",
+        "degradation_type": "",
+        "transcript": ""
+      }
+    ],
+    "whisper": [
+      {
+        "title": "TODO: Whispered Example 1 (Mandarin wEar)",
+        "audio_url": "",
+        "transcript": ""
+      },
+      {
+        "title": "TODO: Whispered Example 2 (English WTIMIT)",
+        "audio_url": "",
+        "transcript": ""
+      }
+    ]
+  }
+}
