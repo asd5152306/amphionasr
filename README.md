@@ -1,6 +1,10 @@
 # AmphionASR Demo Page
 
-静态展示型 demo page，用于论文配套展示。基于纯 HTML/CSS/JS，可直接部署到 GitHub Pages。
+> **Demo Page**: <https://asd5152306.github.io/amphionasr/>
+>
+> **Source Repo**: <https://github.com/asd5152306/amphionasr>
+
+静态展示型 demo page，用于论文配套展示。基于纯 HTML/CSS/JS，已部署到 GitHub Pages，通过 GitHub Actions 自动构建发布。
 
 ## 目录结构
 
@@ -39,9 +43,24 @@ python3 -m http.server 8000
 
 ## 部署到 GitHub Pages
 
-1. 将本目录内容 push 到仓库的 `gh-pages` 分支或 `docs/` 目录
-2. 仓库 Settings → Pages → Source 选择对应分支
-3. 访问 `https://<user>.github.io/<repo>/`
+本仓库已配置 GitHub Actions 自动部署（`.github/workflows/deploy.yml`），push 到 `main` 分支后会自动触发部署。
+
+**当前部署状态**：
+- 仓库：<https://github.com/asd5152306/amphionasr>
+- 访问地址：<https://asd5152306.github.io/amphionasr/>
+- Pages Source：GitHub Actions
+
+**首次部署的开启步骤**（已完成，仅供参考）：
+1. 仓库 Settings → Pages → Source 选择 `GitHub Actions`
+2. push 代码到 `main` 分支，workflow 自动构建并部署
+
+**更新页面**：
+```bash
+git add .
+git commit -m "update: 描述改动"
+git push
+```
+push 后 1-2 分钟内自动重新部署。
 
 ## 自定义
 
