@@ -1,31 +1,18 @@
 {
   "capabilities": {
-    "general": [
-      {
-        "title": "TODO: Example 1 (Mandarin)",
-        "audio_url": "",
-        "transcript": ""
-      },
-      {
-        "title": "TODO: Example 2 (English)",
-        "audio_url": "",
-        "transcript": ""
-      }
-    ],
     "hotword": [
       {
         "title": "TODO: Hotword Example 1 (Mandarin)",
         "audio_url": "",
         "without_hotword": "",
         "with_hotword": "",
-        "hotwords": []
-      },
-      {
-        "title": "TODO: Hotword Example 2 (English)",
-        "audio_url": "",
-        "without_hotword": "",
-        "with_hotword": "",
-        "hotwords": []
+        "hotwords": [],
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Whisper-large-v3", "transcript": "", "metric": "" },
+          { "model": "FireRed-ASR2-LLM", "transcript": "", "metric": "" }
+        ]
       }
     ],
     "tsasr": [
@@ -33,7 +20,12 @@
         "title": "TODO: TS-ASR Example 1 (2-speaker mix)",
         "enroll_audio_url": "",
         "mixture_audio_url": "",
-        "transcript": ""
+        "transcript": "",
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Qwen3-Omni", "transcript": "", "metric": "" }
+        ]
       }
     ],
     "degradation": [
@@ -41,25 +33,46 @@
         "title": "TODO: Degradation Example 1 (far-field)",
         "audio_url": "",
         "degradation_type": "",
-        "transcript": ""
+        "transcript": "",
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Whisper-large-v3", "transcript": "", "metric": "" },
+          { "model": "Kimi-Audio-7B", "transcript": "", "metric": "" }
+        ]
       },
       {
         "title": "TODO: Degradation Example 2 (additive noise)",
         "audio_url": "",
         "degradation_type": "",
-        "transcript": ""
+        "transcript": "",
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+        ]
       }
     ],
     "whisper": [
       {
         "title": "TODO: Whispered Example 1 (Mandarin wEar)",
         "audio_url": "",
-        "transcript": ""
+        "transcript": "",
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "0.58% CER" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+        ]
       },
       {
         "title": "TODO: Whispered Example 2 (English WTIMIT)",
         "audio_url": "",
-        "transcript": ""
+        "transcript": "",
+        "comparisons": [
+          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "6.11% WER" },
+          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
+          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+        ]
       }
     ]
   }

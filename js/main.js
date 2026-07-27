@@ -200,7 +200,44 @@
     var degTagEl = panel.querySelector('[data-field="degradation_type"] .tag');
     if (degTagEl) degTagEl.textContent = example.degradation_type || '—';
 
+    renderComparisons(panel, example);
+
     refreshDynamicStrings();
+  }
+
+  function renderComparisons(panel, example) {
+    var tbody = panel.querySelector('[data-field="comparisons"]');
+    if (!tbody) return;
+    var comparisons = example.comparisons || [];
+    if (comparisons.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="empty-row">' + t('ui.no_comparison') + '</td></tr>';
+      return;
+    }
+    var html = '';
+    comparisons.forEach(function (row) {
+      var isOurs = row.ours === true;
+      var rowClass = isOurs ? 'row-ours' : '';
+      var metricClass = (isOurs || row.best === true) ? 'col-metric metric-best' : 'col-metric';
+      var metricValue = row.metric || '—';
+      var oursTag = isOurs ? ' <span class="ours-tag">' + t('ui.ours') + '</span>' : '';
+      var transcript = row.transcript || '—';
+      html += '<tr class="' + rowClass + '">';
+      html += '<td class="col-model">' + escapeHtml(row.model || '—') + oursTag + '</td>';
+      html += '<td class="col-result">' + escapeHtml(transcript) + '</td>';
+      html += '<td class="' + metricClass + '">' + escapeHtml(metricValue) + '</td>';
+      html += '</tr>';
+    });
+    tbody.innerHTML = html;
+  }
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function setField(panel, fieldName, value) {
@@ -218,6 +255,8 @@
     });
     var hotwordsEl = panel.querySelector('[data-field="hotwords"]');
     if (hotwordsEl) hotwordsEl.innerHTML = t('ui.no_hotwords');
+    var compTbody = panel.querySelector('[data-field="comparisons"]');
+    if (compTbody) compTbody.innerHTML = '<tr><td colspan="3" class="empty-row">—</td></tr>';
     refreshDynamicStrings();
   }
 

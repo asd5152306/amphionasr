@@ -642,6 +642,116 @@ code {
   margin: 0 auto;
 }
 
+/* ===================== Model Comparison Table ===================== */
+.model-comparison {
+  margin-top: 20px;
+}
+
+.comparison-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.comparison-table thead th {
+  background: var(--bg-muted);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.comparison-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tbody tr.row-ours {
+  background: var(--accent-light);
+}
+
+.comparison-table tbody tr.row-ours td:first-child {
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.comparison-table tbody tr.row-ours td .ours-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  background: var(--accent);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.comparison-table .col-model {
+  width: 32%;
+  min-width: 140px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.comparison-table .col-result {
+  width: 48%;
+}
+
+.comparison-table .col-metric {
+  width: 20%;
+  min-width: 80px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.comparison-table .metric-best {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.comparison-table .empty-row {
+  text-align: center;
+  color: var(--text-faint);
+  font-style: italic;
+  padding: 20px;
+}
+
+@media (max-width: 600px) {
+  .comparison-table {
+    font-size: 0.82rem;
+  }
+  .comparison-table thead th,
+  .comparison-table tbody td {
+    padding: 8px 10px;
+  }
+  .comparison-table .col-model {
+    min-width: 100px;
+  }
+}
+
 /* ===================== Footer ===================== */
 .footer {
   padding: 40px 0;

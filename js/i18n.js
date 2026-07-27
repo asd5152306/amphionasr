@@ -70,7 +70,13 @@ window.AMPHION_I18N = {
     'ui.no_examples': '— No examples available —',
     'ui.select_example': '— Select an example ({n}) —',
     'ui.examples_not_found': '— examples.json not found —',
-    'ui.no_hotwords': '—'
+    'ui.no_hotwords': '—',
+    'ui.model_comparison': 'Model Comparison',
+    'ui.col_model': 'Model',
+    'ui.col_result': 'Transcript',
+    'ui.col_metric': 'Metric',
+    'ui.no_comparison': '—',
+    'ui.ours': 'Ours'
   },
   zh: {
     'hero.subtitle': '面向上下文感知语音识别的统一 SpeechLLM',
@@ -142,6 +148,12 @@ window.AMPHION_I18N = {
     'ui.no_examples': '— 暂无示例 —',
     'ui.select_example': '— 选择示例（共 {n} 个）—',
     'ui.examples_not_found': '— 未找到 examples.json —',
-    'ui.no_hotwords': '—'
+    'ui.no_hotwords': '—',
+    'ui.model_comparison': '模型对比',
+    'ui.col_model': '模型',
+    'ui.col_result': '转录结果',
+    'ui.col_metric': '指标',
+    'ui.no_comparison': '—',
+    'ui.ours': '本文'
   }
 };
