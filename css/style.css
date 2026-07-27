@@ -1,3 +1,61 @@
+/* ===================== Language Toggle ===================== */
+.lang-toggle {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 4px 10px;
+  box-shadow: var(--shadow);
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 999px;
+  transition: all 0.15s ease;
+}
+
+.lang-btn:hover {
+  color: var(--accent);
+}
+
+.lang-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+.lang-sep {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+@media (max-width: 480px) {
+  .lang-toggle {
+    top: 10px;
+    right: 12px;
+    padding: 3px 8px;
+  }
+  .lang-btn {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+}
+
 /* ===================== Reset & Base ===================== */
 *,
 *::before,

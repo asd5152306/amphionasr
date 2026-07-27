@@ -1,6 +1,6 @@
 /* AmphionASR Demo Page - interaction logic
- *
  * Loads example data from data/examples.json and wires up:
+ *  - Language toggle (EN / ZH) via data-i18n attributes
  *  - Tab switching between capabilities
  *  - Example dropdown selection
  *  - Audio player + transcript rendering
@@ -10,122 +10,186 @@
 (function () {
   'use strict';
 
-  // ---------- Tab switching ----------
-  const tabs = document.querySelectorAll('.tab');
-  const panels = document.querySelectorAll('.tab-panel');
+  var I18N = window.AMPHION_I18N || { en: {}, zh: {} };
+  var currentLang = 'en';
 
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      tabs.forEach((t) => t.classList.remove('active'));
-      panels.forEach((p) => p.classList.remove('active'));
+  // ---------- i18n ----------
+  function t(key, vars) {
+    var dict = I18N[currentLang] || I18N.en;
+    var str = dict[key] || (I18N.en[key] || key);
+    if (vars) {
+      Object.keys(vars).forEach(function (k) {
+        str = str.replace('{' + k + '}', vars[k]);
+      });
+    }
+    return str;
+  }
+
+  function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      var value = t(key);
+      el.innerHTML = value;
+    });
+    // Update toggle button states
+    document.querySelectorAll('.lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    // Re-apply dynamic UI strings
+    refreshDynamicStrings();
+  }
+
+  function refreshDynamicStrings() {
+    // Update select placeholders if no example selected
+    document.querySelectorAll('.example-select').forEach(function (sel) {
+      if (!sel.value) {
+        var cap = sel.getAttribute('data-capability');
+        var items = (examplesData.capabilities && examplesData.capabilities[cap]) || [];
+        var placeholderKey = items.length ? 'ui.select_example' : 'ui.no_examples';
+        var opt = sel.querySelector('option');
+        if (opt) {
+          opt.textContent = items.length
+            ? t(placeholderKey, { n: items.length })
+            : t('ui.no_examples');
+        }
+      }
+    });
+    // Update audio placeholders
+    document.querySelectorAll('.audio-placeholder').forEach(function (el) {
+      if (el.getAttribute('data-has-audio') === 'true') {
+        el.textContent = t('ui.audio_loaded');
+      } else if (el.getAttribute('data-has-audio') === 'false') {
+        el.textContent = t('ui.no_audio_avail');
+      } else {
+        el.textContent = t('ui.no_audio');
+      }
+    });
+  }
+
+  // ---------- Language toggle buttons ----------
+  document.querySelectorAll('.lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      applyLang(btn.getAttribute('data-lang'));
+    });
+  });
+
+  // ---------- Tab switching ----------
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.getAttribute('data-tab');
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      panels.forEach(function (p) { p.classList.remove('active'); });
       tab.classList.add('active');
-      const panel = document.querySelector(`.tab-panel[data-panel="${target}"]`);
+      var panel = document.querySelector('.tab-panel[data-panel="' + target + '"]');
       if (panel) panel.classList.add('active');
     });
   });
 
   // ---------- Load examples ----------
-  let examplesData = { capabilities: {} };
+  var examplesData = { capabilities: {} };
 
-  async function loadExamples() {
-    try {
-      const res = await fetch('data/examples.json');
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      examplesData = await res.json();
-      populateDropdowns();
-    } catch (err) {
-      console.warn('[AmphionASR demo] Failed to load examples.json:', err);
-      markDropdownsError();
-    }
+  function loadExamples() {
+    fetch('data/examples.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        examplesData = data;
+        populateDropdowns();
+        refreshDynamicStrings();
+      })
+      .catch(function (err) {
+        console.warn('[AmphionASR demo] Failed to load examples.json:', err);
+        markDropdownsError();
+      });
   }
 
   function populateDropdowns() {
-    const caps = examplesData.capabilities || {};
-    Object.keys(caps).forEach((capKey) => {
-      const select = document.querySelector(`.example-select[data-capability="${capKey}"]`);
+    var caps = examplesData.capabilities || {};
+    Object.keys(caps).forEach(function (capKey) {
+      var select = document.querySelector('.example-select[data-capability="' + capKey + '"]');
       if (!select) return;
-      const items = caps[capKey] || [];
+      var items = caps[capKey] || [];
       select.innerHTML = '';
 
-      const placeholder = document.createElement('option');
+      var placeholder = document.createElement('option');
       placeholder.value = '';
       placeholder.textContent = items.length
-        ? `— Select an example (${items.length}) —`
-        : '— No examples available —';
+        ? t('ui.select_example', { n: items.length })
+        : t('ui.no_examples');
       select.appendChild(placeholder);
 
-      items.forEach((item, idx) => {
-        const opt = document.createElement('option');
+      items.forEach(function (item, idx) {
+        var opt = document.createElement('option');
         opt.value = String(idx);
-        opt.textContent = item.title || `Example ${idx + 1}`;
+        opt.textContent = item.title || ('Example ' + (idx + 1));
         select.appendChild(opt);
       });
 
-      select.addEventListener('change', () => {
+      select.addEventListener('change', function () {
         if (select.value === '') {
           resetPanel(capKey);
           return;
         }
-        const example = items[Number(select.value)];
+        var example = items[Number(select.value)];
         renderExample(capKey, example);
       });
     });
   }
 
   function markDropdownsError() {
-    document.querySelectorAll('.example-select').forEach((select) => {
-      select.innerHTML = '<option value="">— examples.json not found —</option>';
+    document.querySelectorAll('.example-select').forEach(function (select) {
+      select.innerHTML = '<option value="">' + t('ui.examples_not_found') + '</option>';
     });
   }
 
   // ---------- Render an example into a panel ----------
   function renderExample(capKey, example) {
-    const panel = document.querySelector(`.tab-panel[data-panel="${capKey}"]`);
+    var panel = document.querySelector('.tab-panel[data-panel="' + capKey + '"]');
     if (!panel) return;
 
-    // Audio (single)
-    const audioEl = panel.querySelector('.audio-player:not(.small) audio');
-    const audioPlaceholder = panel.querySelector('.audio-player:not(.small) .audio-placeholder');
+    var audioEl = panel.querySelector('.audio-player:not(.small) audio');
+    var audioPlaceholder = panel.querySelector('.audio-player:not(.small) .audio-placeholder');
     if (audioEl) {
       if (example.audio_url) {
         audioEl.src = example.audio_url;
         audioEl.style.display = '';
-        if (audioPlaceholder) {
-          audioPlaceholder.textContent = 'Audio loaded';
-        }
+        if (audioPlaceholder) audioPlaceholder.setAttribute('data-has-audio', 'true');
       } else {
         audioEl.removeAttribute('src');
         audioEl.style.display = 'none';
-        if (audioPlaceholder) audioPlaceholder.textContent = 'No audio available';
+        if (audioPlaceholder) audioPlaceholder.setAttribute('data-has-audio', 'false');
       }
     }
 
-    // Dual audio (TS-ASR)
     if (example.enroll_audio_url) {
-      const enrollEl = panel.querySelector('audio[data-audio="enroll"]');
+      var enrollEl = panel.querySelector('audio[data-audio="enroll"]');
       if (enrollEl) enrollEl.src = example.enroll_audio_url;
     }
     if (example.mixture_audio_url) {
-      const mixEl = panel.querySelector('audio[data-audio="mixture"]');
+      var mixEl = panel.querySelector('audio[data-audio="mixture"]');
       if (mixEl) mixEl.src = example.mixture_audio_url;
     }
 
-    // Transcript fields
     setField(panel, 'transcript', example.transcript);
     setField(panel, 'without_hotword', example.without_hotword);
     setField(panel, 'with_hotword', example.with_hotword);
 
-    // Hotword chips
-    const hotwordsEl = panel.querySelector('[data-field="hotwords"]');
+    var hotwordsEl = panel.querySelector('[data-field="hotwords"]');
     if (hotwordsEl) {
       hotwordsEl.innerHTML = '';
-      const hotwords = example.hotwords || [];
+      var hotwords = example.hotwords || [];
       if (hotwords.length === 0) {
-        hotwordsEl.innerHTML = '<span class="chip empty">—</span>';
+        hotwordsEl.innerHTML = '<span class="chip empty">' + t('ui.no_hotwords') + '</span>';
       } else {
-        hotwords.forEach((hw) => {
-          const chip = document.createElement('span');
+        hotwords.forEach(function (hw) {
+          var chip = document.createElement('span');
           chip.className = 'chip';
           chip.textContent = hw;
           hotwordsEl.appendChild(chip);
@@ -133,51 +197,48 @@
       }
     }
 
-    // Degradation type tag
-    const degTagEl = panel.querySelector('[data-field="degradation_type"] .tag');
-    if (degTagEl) {
-      degTagEl.textContent = example.degradation_type || '—';
-    }
+    var degTagEl = panel.querySelector('[data-field="degradation_type"] .tag');
+    if (degTagEl) degTagEl.textContent = example.degradation_type || '—';
+
+    refreshDynamicStrings();
   }
 
   function setField(panel, fieldName, value) {
-    const el = panel.querySelector(`[data-field="${fieldName}"]`);
+    var el = panel.querySelector('[data-field="' + fieldName + '"]');
     if (el) el.textContent = value || '—';
   }
 
   function resetPanel(capKey) {
-    const panel = document.querySelector(`.tab-panel[data-panel="${capKey}"]`);
+    var panel = document.querySelector('.tab-panel[data-panel="' + capKey + '"]');
     if (!panel) return;
-    panel.querySelectorAll('audio').forEach((a) => {
-      a.removeAttribute('src');
+    panel.querySelectorAll('audio').forEach(function (a) { a.removeAttribute('src'); });
+    panel.querySelectorAll('[data-field]').forEach(function (el) { el.textContent = '—'; });
+    panel.querySelectorAll('.audio-placeholder').forEach(function (el) {
+      el.removeAttribute('data-has-audio');
     });
-    panel.querySelectorAll('[data-field]').forEach((el) => {
-      el.textContent = '—';
-    });
-    const hotwordsEl = panel.querySelector('[data-field="hotwords"]');
-    if (hotwordsEl) hotwordsEl.innerHTML = '—';
+    var hotwordsEl = panel.querySelector('[data-field="hotwords"]');
+    if (hotwordsEl) hotwordsEl.innerHTML = t('ui.no_hotwords');
+    refreshDynamicStrings();
   }
 
   // ---------- BibTeX copy button ----------
-  const copyBtn = document.querySelector('.copy-btn');
+  var copyBtn = document.querySelector('.copy-btn');
   if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      const targetSelector = copyBtn.dataset.copy;
-      const target = document.querySelector('.' + targetSelector);
+    copyBtn.addEventListener('click', function () {
+      var targetSelector = copyBtn.getAttribute('data-copy');
+      var target = document.querySelector('.' + targetSelector);
       if (!target) return;
-      try {
-        await navigator.clipboard.writeText(target.textContent);
-        const original = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        setTimeout(() => {
-          copyBtn.textContent = original;
-        }, 1500);
-      } catch (err) {
-        console.warn('Copy failed:', err);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(target.textContent).then(function () {
+          var original = copyBtn.textContent;
+          copyBtn.textContent = t('bibtex.copied');
+          setTimeout(function () { copyBtn.textContent = original; }, 1500);
+        }).catch(function () {});
       }
     });
   }
 
   // ---------- Init ----------
+  applyLang('en');
   loadExamples();
 })();
