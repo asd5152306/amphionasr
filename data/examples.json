@@ -8,7 +8,6 @@
         "with_hotword": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯基尔兴县的一个市镇。",
         "hotwords": [
           "格里斯基尔兴县",
-          "上奥地利州",
           "奥地利",
           "豪斯鲁克地区埃舍瑙"
         ],
@@ -17,53 +16,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯基尔兴县的一个市镇。",
-            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里斯基尔兴县</b>的一个市镇。",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b>上奥地利州<b>格里斯基尔兴县</b>的一个市镇。",
             "metric": "0% CER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯蒂尔新县的一个市镇。",
-            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里斯蒂尔新县</b>的一个市镇。",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b>上奥地利州<b>格里斯蒂尔新县</b>的一个市镇。",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里茨基尔兴县的一个市镇。",
-            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里茨基尔兴县</b>的一个市镇。",
-            "metric": ""
-          }
-        ]
-      },
-      {
-        "title": "HW-FAIR-EN-1: Five UK place names",
-        "audio_url": "assets/samples/hotword/HW-FAIR-EN-1.mp3",
-        "without_hotword": "Norman castles existed at rockingham, banwell, lindbyborn, northampton and waringborough.",
-        "with_hotword": "Norman castles existed at Rockingham, Barnwell, Lilbourne, Northampton and Wellingborough.",
-        "hotwords": [
-          "Northampton",
-          "Rockingham",
-          "Wellingborough",
-          "Lilbourne",
-          "Barnwell"
-        ],
-        "comparisons": [
-          {
-            "model": "AmphionASR (with retrieval)",
-            "ours": true,
-            "transcript": "Norman castles existed at Rockingham, Barnwell, Lilbourne, Northampton and Wellingborough.",
-            "transcript_html": "Norman castles existed at <b>Rockingham</b>, <b>Barnwell</b>, <b>Lilbourne</b>, <b>Northampton</b> and <b>Wellingborough</b>.",
-            "metric": "0% WER"
-          },
-          {
-            "model": "AmphionASR (no hotword)",
-            "transcript": "Norman castles existed at rockingham, banwell, lindbyborn, northampton and waringborough.",
-            "transcript_html": "Norman castles existed at <b>rockingham</b>, <b>banwell</b>, <b>lindbyborn</b>, <b>northampton</b> and <b>waringborough</b>.",
-            "metric": ""
-          },
-          {
-            "model": "Bailian Fun-ASR-Realtime",
-            "transcript": "Norman castles existed at Rockingham, Banbury. not that.",
-            "transcript_html": "Norman castles existed at <b>Rockingham</b>, <b>Banbury</b>. not that.",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b>上奥地利州<b>格里茨基尔兴县</b>的一个市镇。",
             "metric": ""
           }
         ]

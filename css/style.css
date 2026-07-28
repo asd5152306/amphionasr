@@ -505,6 +505,44 @@ code {
   min-width: 180px;
 }
 
+.sample-groundtruth {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.sample-groundtruth .gt-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.sample-groundtruth .gt-text {
+  color: var(--text);
+}
+
+.sample-groundtruth .gt-text b {
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.panel-note {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
 .sample-hotwords,
 .sample-degradation {
   display: flex;

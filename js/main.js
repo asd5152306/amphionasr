@@ -115,8 +115,29 @@
           '<div class="sample-label">' + escapeHtml(label) + '</div>' +
           audioHtml +
         '</div>' +
+        renderGroundTruth(capKey, item) +
         extraHtml +
         tableHtml +
+      '</div>'
+    );
+  }
+
+  function renderGroundTruth(capKey, item) {
+    var gtText = '';
+    var gtHtml = '';
+    if (capKey === 'hotword') {
+      gtText = item.with_hotword;
+      var oursRow = (item.comparisons || []).filter(function (r) { return r.ours; })[0];
+      gtHtml = oursRow ? oursRow.transcript_html : '';
+    } else {
+      gtText = item.transcript;
+    }
+    if (!gtText && !gtHtml) return '';
+    var content = gtHtml ? gtHtml : escapeHtml(gtText);
+    return (
+      '<div class="sample-groundtruth">' +
+        '<span class="gt-label">' + escapeHtml(t('ui.ground_truth')) + '</span>' +
+        '<span class="gt-text">' + content + '</span>' +
       '</div>'
     );
   }

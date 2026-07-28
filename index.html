@@ -27,10 +27,6 @@
       </div>
       <h1 class="hero-title">AmphionASR</h1>
       <p class="hero-subtitle" data-i18n="hero.subtitle">Personalized Context-Aware Speech Recognition</p>
-      <p class="hero-meta">
-        <span class="badge" data-i18n="hero.badge.params">2.0B parameters</span>
-        <span class="badge" data-i18n="hero.badge.lang">Mandarin &amp; English</span>
-      </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#TODO-paper" target="_blank" rel="noopener" data-i18n="hero.btn.paper">Paper</a>
         <a class="btn btn-secondary" href="#TODO-code" target="_blank" rel="noopener" data-i18n="hero.btn.code">Code</a>
@@ -49,14 +45,14 @@
     <div class="container">
       <h2 class="section-title" data-i18n="overview.title">Overview</h2>
       <p class="section-lead" data-i18n="overview.lead">
-        AmphionASR is a SpeechLLM that supports multiple conditioned recognition
-        settings through a shared model and task-specific inputs. A 16&nbsp;kHz
-        waveform is encoded by the <strong>AuT encoder</strong> into the LLM's
-        embedding space; the text branch tokenises the instruction and optional
-        hotword lines. A parallel <strong>retrieval</strong> branch selects a
-        top-<em>K</em> hotword subset from a large candidate vocabulary and
-        inserts it into the prompt line before a single ASR forward pass.
+        An AuT audio encoder feeds frame embeddings directly into the LLM. At
+        inference time, a hotword retriever selects a top-<em>K</em> subset from
+        a large candidate vocabulary and inserts it into the prompt before
+        decoding.
       </p>
+      <div class="arch-figure">
+        <img src="assets/figures/architecture.png" alt="AmphionASR architecture" class="arch-figure-img" />
+      </div>
     </div>
   </section>
 
@@ -85,6 +81,10 @@
             Retrieves a top-K hotword subset from a large candidate vocabulary
             and inserts it into the prompt, biasing recognition toward rare or
             domain-specific entities.
+          </p>
+          <p class="panel-note" data-i18n="hotword.note">
+            Note: only the real hotwords (those actually present in the audio)
+            among the retrieved top-K candidates are displayed below.
           </p>
         </div>
         <div class="samples-list" data-capability="hotword"></div>
@@ -126,39 +126,6 @@
           </p>
         </div>
         <div class="samples-list" data-capability="whisper"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== Architecture ===================== -->
-  <section class="section architecture" id="architecture">
-    <div class="container">
-      <h2 class="section-title" data-i18n="architecture.title">Architecture</h2>
-      <p class="section-lead" data-i18n="architecture.lead">
-        An AuT audio encoder feeds frame embeddings directly into the LLM. At
-        inference time, a hotword retriever selects a top-<em>K</em> subset from
-        a large candidate vocabulary and inserts it into the prompt before
-        decoding.
-      </p>
-      <div class="arch-figure">
-        <img src="assets/figures/architecture.png" alt="AmphionASR architecture" class="arch-figure-img" />
-      </div>
-      <div class="arch-components">
-        <div class="arch-card">
-          <h4 data-i18n="arch.aut.title">AuT Encoder</h4>
-          <div class="arch-meta" data-i18n="arch.aut.meta">300M params</div>
-          <p data-i18n="arch.aut.desc">24-layer AuT encoder. Log-mel front-end (128 bins, 10ms hop), convolutional sub-sampler, Whisper-style pre-LN Transformer into 2048-d frame embeddings at 12.5 Hz.</p>
-        </div>
-        <div class="arch-card">
-          <h4 data-i18n="arch.llm.title">LLM</h4>
-          <div class="arch-meta" data-i18n="arch.llm.meta">1.7B params</div>
-          <p data-i18n="arch.llm.desc">28-layer decoder-only Transformer, 2048-d hidden states, 64K native context length.</p>
-        </div>
-        <div class="arch-card">
-          <h4 data-i18n="arch.retrieval.title">Retrieval Adapters</h4>
-          <div class="arch-meta" data-i18n="arch.retrieval.meta">2.6M params</div>
-          <p data-i18n="arch.retrieval.desc">Two small MLP adapters mapping frozen AuT frame embeddings and frozen LLM token embeddings into a shared 512-d space. Max-over-time scoring selects top-K hotwords.</p>
-        </div>
       </div>
     </div>
   </section>
