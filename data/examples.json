@@ -149,7 +149,7 @@
     ],
     "tsasr": [
       {
-        "title": "TS-EN-1: Qwen fully transcribes interfering speaker",
+        "title": "TS-EN-1: Baseline fully transcribes interfering speaker",
         "enroll_audio_url": "assets/samples/tsasr/TS-EN-1_enroll.flac",
         "mixture_audio_url": "assets/samples/tsasr/TS-EN-1_mixture.wav",
         "transcript": "They said to the glaziers, you have no right to think highly of Paul.",
@@ -173,7 +173,7 @@
         ]
       },
       {
-        "title": "TS-EN-2: Qwen picks interferer, plain ASR merges two speakers",
+        "title": "TS-EN-2: Baseline picks interferer, plain ASR merges two speakers",
         "enroll_audio_url": "assets/samples/tsasr/TS-EN-2_enroll.flac",
         "mixture_audio_url": "assets/samples/tsasr/TS-EN-2_mixture.wav",
         "transcript": "I am very tired of swimming about here. Oh, mouse.",
@@ -197,7 +197,7 @@
         ]
       },
       {
-        "title": "TS-EN-3: Qwen and plain ASR both select the other speaker",
+        "title": "TS-EN-3: Baseline and plain ASR both select the other speaker",
         "enroll_audio_url": "assets/samples/tsasr/TS-EN-3_enroll.flac",
         "mixture_audio_url": "assets/samples/tsasr/TS-EN-3_mixture.wav",
         "transcript": "I cannot deny myself the gratification of inserting this reply.",

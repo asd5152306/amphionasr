@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AmphionASR: A Unified SpeechLLM for Context-Aware Speech Recognition</title>
-  <meta name="description" content="AmphionASR is a unified SpeechLLM built on Qwen3-ASR-1.7B supporting general, hotword-conditioned, target-speaker, degradation-robust, and whispered-speech ASR." />
+  <meta name="description" content="AmphionASR is a unified SpeechLLM supporting general, hotword-conditioned, target-speaker, degradation-robust, and whispered-speech ASR." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,7 +28,6 @@
       <h1 class="hero-title">AmphionASR</h1>
       <p class="hero-subtitle" data-i18n="hero.subtitle">A Unified SpeechLLM for Context-Aware Speech Recognition</p>
       <p class="hero-meta">
-        <span class="badge" data-i18n="hero.badge.backbone">Built on Qwen3-ASR-1.7B</span>
         <span class="badge" data-i18n="hero.badge.params">2.0B parameters</span>
         <span class="badge" data-i18n="hero.badge.lang">Mandarin &amp; English</span>
       </p>
@@ -344,12 +343,12 @@
         <div class="arch-card">
           <h4 data-i18n="arch.aut.title">AuT Encoder</h4>
           <div class="arch-meta" data-i18n="arch.aut.meta">300M params</div>
-          <p data-i18n="arch.aut.desc">Qwen3-ASR 24-layer AuT encoder. Log-mel front-end (128 bins, 10ms hop), convolutional sub-sampler, Whisper-style pre-LN Transformer into 2048-d frame embeddings at 12.5 Hz.</p>
+          <p data-i18n="arch.aut.desc">24-layer AuT encoder. Log-mel front-end (128 bins, 10ms hop), convolutional sub-sampler, Whisper-style pre-LN Transformer into 2048-d frame embeddings at 12.5 Hz.</p>
         </div>
         <div class="arch-card">
           <h4 data-i18n="arch.llm.title">LLM</h4>
           <div class="arch-meta" data-i18n="arch.llm.meta">1.7B params</div>
-          <p data-i18n="arch.llm.desc">Initialised from Qwen3-ASR-1.7B text backbone. 28-layer decoder-only Transformer, 2048-d hidden states, 64K native context length.</p>
+          <p data-i18n="arch.llm.desc">28-layer decoder-only Transformer, 2048-d hidden states, 64K native context length.</p>
         </div>
         <div class="arch-card">
           <h4 data-i18n="arch.retrieval.title">Retrieval Adapters</h4>
