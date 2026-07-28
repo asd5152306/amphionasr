@@ -128,7 +128,7 @@
       items.forEach(function (item, idx) {
         var opt = document.createElement('option');
         opt.value = String(idx);
-        opt.textContent = item.title || ('Example ' + (idx + 1));
+        opt.textContent = t('ui.sample_label', { n: idx + 1 });
         select.appendChild(opt);
       });
 
