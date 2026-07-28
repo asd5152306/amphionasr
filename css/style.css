@@ -253,6 +253,7 @@ code {
 
 .hero-teaser {
   margin-top: 16px;
+  text-align: center;
 }
 
 .teaser-placeholder,
@@ -271,13 +272,13 @@ code {
 }
 
 .hero-teaser-img {
+  display: block;
   width: 100%;
-  max-width: 960px;
+  max-width: 720px;
   height: auto;
+  margin: 0 auto;
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
-  display: block;
-  margin: 0 auto;
 }
 
 .arch-figure {
@@ -286,8 +287,11 @@ code {
 }
 
 .arch-figure-img {
-  max-width: 100%;
+  display: block;
+  width: 100%;
+  max-width: 720px;
   height: auto;
+  margin: 0 auto;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
