@@ -179,11 +179,13 @@
       var isOurs = row.ours === true;
       var rowClass = isOurs ? 'row-ours' : '';
       var oursTag = isOurs ? ' <span class="ours-tag">' + escapeHtml(t('ui.ours')) + '</span>' : '';
-      var transcript = row.transcript || '—';
+      var transcriptCell = row.transcript_html
+        ? row.transcript_html
+        : escapeHtml(row.transcript || '—');
       return (
         '<tr class="' + rowClass + '">' +
           '<td class="col-model">' + escapeHtml(row.model || '—') + oursTag + '</td>' +
-          '<td class="col-result">' + escapeHtml(transcript) + '</td>' +
+          '<td class="col-result">' + transcriptCell + '</td>' +
         '</tr>'
       );
     }).join('');

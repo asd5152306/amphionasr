@@ -626,6 +626,15 @@ code {
   width: 70%;
 }
 
+.cmp-table .col-result b {
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+
+.cmp-table tbody tr.row-ours .col-result b {
+  color: var(--accent-dark);
+}
+
 @media (max-width: 600px) {
   .cmp-table {
     font-size: 0.82rem;

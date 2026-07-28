@@ -17,16 +17,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯基尔兴县的一个市镇。",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里斯基尔兴县</b>的一个市镇。",
             "metric": "0% CER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯蒂尔新县的一个市镇。",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里斯蒂尔新县</b>的一个市镇。",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里茨基尔兴县的一个市镇。",
+            "transcript_html": "<b>豪斯鲁克地区埃舍瑙</b>是<b>奥地利</b><b>上奥地利州</b><b>格里茨基尔兴县</b>的一个市镇。",
             "metric": ""
           }
         ]
@@ -48,16 +51,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "Norman castles existed at Rockingham, Barnwell, Lilbourne, Northampton and Wellingborough.",
+            "transcript_html": "Norman castles existed at <b>Rockingham</b>, <b>Barnwell</b>, <b>Lilbourne</b>, <b>Northampton</b> and <b>Wellingborough</b>.",
             "metric": "0% WER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "Norman castles existed at rockingham, banwell, lindbyborn, northampton and waringborough.",
+            "transcript_html": "Norman castles existed at <b>rockingham</b>, <b>banwell</b>, <b>lindbyborn</b>, <b>northampton</b> and <b>waringborough</b>.",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "Norman castles existed at Rockingham, Banbury. not that.",
+            "transcript_html": "Norman castles existed at <b>Rockingham</b>, <b>Banbury</b>. not that.",
             "metric": ""
           }
         ]
@@ -77,16 +83,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "Azzaiolo's \"Chi passa per 'sta strada\" was adapted by English composer William Byrd.",
+            "transcript_html": "<b>Azzaiolo</b>'s \"<b>Chi passa per 'sta strada</b>\" was adapted by English composer <b>William Byrd</b>.",
             "metric": "0% WER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "Asai yolas \"chippa sa persta strada\" was adapted by english composer william word.",
+            "transcript_html": "<b>Asai yolas</b> \"<b>chippa sa persta strada</b>\" was adapted by english composer <b>william word</b>.",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "As I yolas, \"Chippasa perstastrada\" was adapted by English composer William Byrd.",
+            "transcript_html": "<b>As I yolas</b>, \"<b>Chippasa perstastrada</b>\" was adapted by English composer <b>William Byrd</b>.",
             "metric": ""
           }
         ]
@@ -104,16 +113,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "Nikiforos Hatzidakis was killed.",
+            "transcript_html": "<b>Nikiforos Hatzidakis</b> was killed.",
             "metric": "0% WER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "Nikiforos petzidakis was killed.",
+            "transcript_html": "<b>Nikiforos petzidakis</b> was killed.",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "Niki Foros Ath Zidakis was killed.",
+            "transcript_html": "<b>Niki Foros Ath Zidakis</b> was killed.",
             "metric": ""
           }
         ]
@@ -132,16 +144,19 @@
             "model": "AmphionASR (with retrieval)",
             "ours": true,
             "transcript": "It runs roughly parallel to both the Dukes Highway and the Adelaide–Wolseley railway line.",
+            "transcript_html": "It runs roughly parallel to both the <b>Dukes Highway</b> and the <b>Adelaide–Wolseley</b> railway line.",
             "metric": "0% WER"
           },
           {
             "model": "AmphionASR (no hotword)",
             "transcript": "It runs roughly parallel to both the dukes highway and the adelaide wallisley railway line.",
+            "transcript_html": "It runs roughly parallel to both the <b>dukes highway</b> and the <b>adelaide wallisley</b> railway line.",
             "metric": ""
           },
           {
             "model": "Bailian Fun-ASR-Realtime",
             "transcript": "It runs roughly parallel to both the Dukes Highway and the Adelaide-Wollongong railway line.",
+            "transcript_html": "It runs roughly parallel to both the <b>Dukes Highway</b> and the <b>Adelaide-Wollongong</b> railway line.",
             "metric": ""
           }
         ]
