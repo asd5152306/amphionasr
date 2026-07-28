@@ -1,7 +1,7 @@
 /* AmphionASR Demo Page - i18n dictionary (EN / ZH) */
 window.AMPHION_I18N = {
   en: {
-    'hero.subtitle': 'A Unified SpeechLLM for Context-Aware Speech Recognition',
+    'hero.subtitle': 'Personalized Context-Aware Speech Recognition',
     'hero.badge.params': '2.0B parameters',
     'hero.badge.lang': 'Mandarin & English',
     'hero.btn.paper': 'Paper',
@@ -43,7 +43,7 @@ window.AMPHION_I18N = {
     'bibtex.title': 'Citation',
     'bibtex.copy': 'Copy BibTeX',
     'bibtex.copied': 'Copied!',
-    'footer.text': 'AmphionASR — A Unified SpeechLLM for Context-Aware Speech Recognition',
+    'footer.text': 'AmphionASR — Personalized Context-Aware Speech Recognition',
     'footer.paper': 'Paper',
     'footer.code': 'Code',
     'footer.model': 'Model',
@@ -59,7 +59,7 @@ window.AMPHION_I18N = {
     'ui.ours': 'Ours'
   },
   zh: {
-    'hero.subtitle': '面向上下文感知语音识别的统一 SpeechLLM',
+    'hero.subtitle': '个性化上下文感知语音识别',
     'hero.badge.params': '20 亿参数',
     'hero.badge.lang': '中英双语',
     'hero.btn.paper': '论文',
@@ -101,7 +101,7 @@ window.AMPHION_I18N = {
     'bibtex.title': '引用',
     'bibtex.copy': '复制 BibTeX',
     'bibtex.copied': '已复制！',
-    'footer.text': 'AmphionASR — 面向上下文感知语音识别的统一 SpeechLLM',
+    'footer.text': 'AmphionASR — 个性化上下文感知语音识别',
     'footer.paper': '论文',
     'footer.code': '代码',
     'footer.model': '模型',
