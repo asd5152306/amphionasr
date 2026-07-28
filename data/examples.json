@@ -2,76 +2,588 @@
   "capabilities": {
     "hotword": [
       {
-        "title": "TODO: Hotword Example 1 (Mandarin)",
-        "audio_url": "",
-        "without_hotword": "",
-        "with_hotword": "",
-        "hotwords": [],
+        "title": "HW-FAIR-ZH-1: Four Austrian place names (lowest rank #50)",
+        "audio_url": "assets/samples/hotword/HW-FAIR-ZH-1.mp3",
+        "without_hotword": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯蒂尔新县的一个市镇。",
+        "with_hotword": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯基尔兴县的一个市镇。",
+        "hotwords": [
+          "格里斯基尔兴县",
+          "上奥地利州",
+          "奥地利",
+          "豪斯鲁克地区埃舍瑙"
+        ],
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Whisper-large-v3", "transcript": "", "metric": "" },
-          { "model": "FireRed-ASR2-LLM", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR (with retrieval)",
+            "ours": true,
+            "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯基尔兴县的一个市镇。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "AmphionASR (no hotword)",
+            "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里斯蒂尔新县的一个市镇。",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "豪斯鲁克地区埃舍瑙是奥地利上奥地利州格里茨基尔兴县的一个市镇。",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "HW-FAIR-EN-1: Five UK place names",
+        "audio_url": "assets/samples/hotword/HW-FAIR-EN-1.mp3",
+        "without_hotword": "Norman castles existed at rockingham, banwell, lindbyborn, northampton and waringborough.",
+        "with_hotword": "Norman castles existed at Rockingham, Barnwell, Lilbourne, Northampton and Wellingborough.",
+        "hotwords": [
+          "Northampton",
+          "Rockingham",
+          "Wellingborough",
+          "Lilbourne",
+          "Barnwell"
+        ],
+        "comparisons": [
+          {
+            "model": "AmphionASR (with retrieval)",
+            "ours": true,
+            "transcript": "Norman castles existed at Rockingham, Barnwell, Lilbourne, Northampton and Wellingborough.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "AmphionASR (no hotword)",
+            "transcript": "Norman castles existed at rockingham, banwell, lindbyborn, northampton and waringborough.",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "Norman castles existed at Rockingham, Banbury. not that.",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "HW-FAIR-EN-2: Musician name and Italian song title",
+        "audio_url": "assets/samples/hotword/HW-FAIR-EN-2.mp3",
+        "without_hotword": "Asai yolas \"chippa sa persta strada\" was adapted by english composer william word.",
+        "with_hotword": "Azzaiolo's \"Chi passa per 'sta strada\" was adapted by English composer William Byrd.",
+        "hotwords": [
+          "Chi passa per 'sta strada",
+          "Azzaiolo",
+          "William Byrd"
+        ],
+        "comparisons": [
+          {
+            "model": "AmphionASR (with retrieval)",
+            "ours": true,
+            "transcript": "Azzaiolo's \"Chi passa per 'sta strada\" was adapted by English composer William Byrd.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "AmphionASR (no hotword)",
+            "transcript": "Asai yolas \"chippa sa persta strada\" was adapted by english composer william word.",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "As I yolas, \"Chippasa perstastrada\" was adapted by English composer William Byrd.",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "HW-FAIR-EN-3: Nikiforos Hatzidakis",
+        "audio_url": "assets/samples/hotword/HW-FAIR-EN-3.mp3",
+        "without_hotword": "Nikiforos petzidakis was killed.",
+        "with_hotword": "Nikiforos Hatzidakis was killed.",
+        "hotwords": [
+          "Nikiforos Hatzidakis"
+        ],
+        "comparisons": [
+          {
+            "model": "AmphionASR (with retrieval)",
+            "ours": true,
+            "transcript": "Nikiforos Hatzidakis was killed.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "AmphionASR (no hotword)",
+            "transcript": "Nikiforos petzidakis was killed.",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "Niki Foros Ath Zidakis was killed.",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "HW-LIMIT-EN-1: Adelaide-Wolseley interface length boundary",
+        "audio_url": "assets/samples/hotword/HW-LIMIT-EN-1.mp3",
+        "without_hotword": "It runs roughly parallel to both the dukes highway and the adelaide wallisley railway line.",
+        "with_hotword": "It runs roughly parallel to both the Dukes Highway and the Adelaide–Wolseley railway line.",
+        "hotwords": [
+          "Dukes Highway",
+          "Adelaide–Wolseley"
+        ],
+        "comparisons": [
+          {
+            "model": "AmphionASR (with retrieval)",
+            "ours": true,
+            "transcript": "It runs roughly parallel to both the Dukes Highway and the Adelaide–Wolseley railway line.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "AmphionASR (no hotword)",
+            "transcript": "It runs roughly parallel to both the dukes highway and the adelaide wallisley railway line.",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "It runs roughly parallel to both the Dukes Highway and the Adelaide-Wollongong railway line.",
+            "metric": ""
+          }
         ]
       }
     ],
     "tsasr": [
       {
-        "title": "TODO: TS-ASR Example 1 (2-speaker mix)",
-        "enroll_audio_url": "",
-        "mixture_audio_url": "",
-        "transcript": "",
+        "title": "TS-EN-1: Qwen fully transcribes interfering speaker",
+        "enroll_audio_url": "assets/samples/tsasr/TS-EN-1_enroll.flac",
+        "mixture_audio_url": "assets/samples/tsasr/TS-EN-1_mixture.wav",
+        "transcript": "They said to the glaziers, you have no right to think highly of Paul.",
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Qwen3-Omni", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "They said to the glaziers, you have no right to think highly of Paul.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-Omni-30B-A3B",
+            "transcript": "Rejoice in thy own fresh youth.",
+            "metric": "Wrong speaker"
+          },
+          {
+            "model": "FireRed-ASR2-LLM (no enrollment)",
+            "transcript": "it's tragic isn't it but i don't like to see you fall",
+            "metric": "No enrollment"
+          }
+        ]
+      },
+      {
+        "title": "TS-EN-2: Qwen picks interferer, plain ASR merges two speakers",
+        "enroll_audio_url": "assets/samples/tsasr/TS-EN-2_enroll.flac",
+        "mixture_audio_url": "assets/samples/tsasr/TS-EN-2_mixture.wav",
+        "transcript": "I am very tired of swimming about here. Oh, mouse.",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "I am very tired of swimming about here. Oh, mouse.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-Omni-30B-A3B",
+            "transcript": "Oh, that made him so angry.",
+            "metric": "Wrong speaker"
+          },
+          {
+            "model": "FireRed-ASR2-LLM (no enrollment)",
+            "transcript": "i am very tired of swimming about so angry",
+            "metric": "Merged speakers"
+          }
+        ]
+      },
+      {
+        "title": "TS-EN-3: Qwen and plain ASR both select the other speaker",
+        "enroll_audio_url": "assets/samples/tsasr/TS-EN-3_enroll.flac",
+        "mixture_audio_url": "assets/samples/tsasr/TS-EN-3_mixture.wav",
+        "transcript": "I cannot deny myself the gratification of inserting this reply.",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "I cannot deny myself the gratification of inserting this reply.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-Omni-30B-A3B",
+            "transcript": "The moment I looked at my table, I was aware that someone had rummaged among my papers.",
+            "metric": "Wrong speaker"
+          },
+          {
+            "model": "FireRed-ASR2-LLM (no enrollment)",
+            "transcript": "the moment i looked at my table i was aware that someone had rummaged among my papers",
+            "metric": "Wrong speaker"
+          }
+        ]
+      },
+      {
+        "title": "TS-EN-4: Three-speaker mixture",
+        "enroll_audio_url": "assets/samples/tsasr/TS-EN-4_enroll.flac",
+        "mixture_audio_url": "assets/samples/tsasr/TS-EN-4_mixture.wav",
+        "transcript": "However, the grace and grace of God.",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "However, the grace and grace of God.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-Omni-30B-A3B",
+            "transcript": "Then they started on again, and two hours later, they were at the gate.",
+            "metric": "Wrong speaker"
+          },
+          {
+            "model": "FireRed-ASR2-LLM (no enrollment)",
+            "transcript": "then we started on the game and two hours later came",
+            "metric": "Wrong speaker"
+          }
         ]
       }
     ],
     "degradation": [
       {
-        "title": "TODO: Degradation Example 1 (far-field)",
-        "audio_url": "",
-        "degradation_type": "",
-        "transcript": "",
+        "title": "VITW-ZH-1: Transmission dropout",
+        "audio_url": "assets/samples/degradation/VITW-ZH-1.wav",
+        "degradation_type": "Transmission dropout",
+        "transcript": "那个新开的商场品牌挺多的，下次周末可以去逛逛，说不定能买到喜欢的东西。",
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Whisper-large-v3", "transcript": "", "metric": "" },
-          { "model": "Kimi-Audio-7B", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "那个新开的商场品牌挺多的，下次周末可以去逛逛，说不定能买到喜欢的东西。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "那个云台的商品牌挺多的，下次周末可以去逛，定能买到喜欢的东西。",
+            "metric": ""
+          },
+          {
+            "model": "Seed 2.0 Lite",
+            "transcript": "那边开的商品牌挺多的，下次周末可以去逛逛，指不定能买到喜欢的东西。",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "那个云台的商品牌挺多的，下次周末可以去逛逛，说不定能买到喜欢的东西。",
+            "metric": ""
+          }
         ]
       },
       {
-        "title": "TODO: Degradation Example 2 (additive noise)",
-        "audio_url": "",
-        "degradation_type": "",
-        "transcript": "",
+        "title": "VITW-ZH-2: Echo",
+        "audio_url": "assets/samples/degradation/VITW-ZH-2.wav",
+        "degradation_type": "Echo",
+        "transcript": "我刚才在地铁上看到有人在画画，画得还挺像的。",
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "我刚才在地铁上看到有人在画画，画得还挺像的。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "我刚才在地铁上的时候，在画画，画的还挺像。",
+            "metric": ""
+          },
+          {
+            "model": "Seed 2.0 Lite",
+            "transcript": "我刚才在地铁上闻到有人在画画，画得还挺香。",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "VITW-EN-1: Echo",
+        "audio_url": "assets/samples/degradation/VITW-EN-1.wav",
+        "degradation_type": "Echo",
+        "transcript": "The dog needs a new toy because he has chewed up all of his old ones.",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "The dog needs a new toy because he has chewed up all of his old ones.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "The dog needs a new toy because it chewed up all of its bones.",
+            "metric": ""
+          },
+          {
+            "model": "Seed 2.0 Lite",
+            "transcript": "The dog needs a new toy because it's chewed up all of its old ones.",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "VITW-ZH-3: Recording coloration",
+        "audio_url": "assets/samples/degradation/VITW-ZH-3.wav",
+        "degradation_type": "Recording coloration",
+        "transcript": "刚才那个推销电话说是推销保险的，我说不需要。",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "刚才那个推销电话说是推销保险的，我说不需要。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "刚才那个电话，说是推销保险，我说不需要。",
+            "metric": ""
+          },
+          {
+            "model": "Seed 2.0 Lite",
+            "transcript": "刚才那个，这通电话，说是推销保险，我说不需要。",
+            "metric": ""
+          },
+          {
+            "model": "Bailian Fun-ASR-Realtime",
+            "transcript": "和变化。不需要。",
+            "metric": ""
+          }
         ]
       }
     ],
     "whisper": [
       {
-        "title": "TODO: Whispered Example 1 (Mandarin wEar)",
-        "audio_url": "",
-        "transcript": "",
+        "title": "WHSP-ZH-1: 采菊东篱下",
+        "audio_url": "assets/samples/whisper/WHSP-ZH-1.wav",
+        "transcript": "采菊东篱下，悠然见南山。",
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "0.58% CER" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "采菊东篱下，悠然见南山。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "采菊东篱下，悠然见南山。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "FireRed-ASR2-LLM",
+            "transcript": "在去动力下悠然见南山",
+            "metric": ""
+          },
+          {
+            "model": "Fun-ASR-Nano-2512",
+            "transcript": "在驱动力下，悠然见南山。",
+            "metric": ""
+          },
+          {
+            "model": "GLM-ASR-Nano-2512",
+            "transcript": "在驱动力下，悠然见南山",
+            "metric": ""
+          },
+          {
+            "model": "Kimi-Audio-7B-Instruct",
+            "transcript": "在曲动力下悠然见南山",
+            "metric": ""
+          },
+          {
+            "model": "MiniCPM-o 2.6",
+            "transcript": "在驱动力下，悠然见南山。",
+            "metric": ""
+          },
+          {
+            "model": "MOSS-Audio-4B-Instruct",
+            "transcript": "在曲动里下游染剑南山",
+            "metric": ""
+          },
+          {
+            "model": "Step-Audio 2 mini",
+            "transcript": "在曲中，你下悠然见南山。",
+            "metric": ""
+          },
+          {
+            "model": "Whisper-large-v3",
+            "transcript": "在驱动力下悠然见南山",
+            "metric": ""
+          }
         ]
       },
       {
-        "title": "TODO: Whispered Example 2 (English WTIMIT)",
-        "audio_url": "",
-        "transcript": "",
+        "title": "WHSP-ZH-2: 力拔山兮气盖世",
+        "audio_url": "assets/samples/whisper/WHSP-ZH-2.wav",
+        "transcript": "力拔山兮气盖世，时不利兮骓不逝。",
         "comparisons": [
-          { "model": "AmphionASR", "ours": true, "transcript": "", "metric": "6.11% WER" },
-          { "model": "Qwen3-ASR-1.7B", "transcript": "", "metric": "" },
-          { "model": "Whisper-large-v3", "transcript": "", "metric": "" }
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "力拔山兮气盖世，时不利兮骓不逝。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "力拔山兮气盖世，时不利兮骓不逝。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "Fun-ASR-Nano-2512",
+            "transcript": "力拔山兮气盖世，时不利兮骓不逝。",
+            "metric": "0% CER"
+          },
+          {
+            "model": "FireRed-ASR2-LLM",
+            "transcript": "力拔山兮气盖世时不利兮骓不至",
+            "metric": ""
+          },
+          {
+            "model": "GLM-ASR-Nano-2512",
+            "transcript": "李拔身兮其盖世，世不离兮追不至。",
+            "metric": ""
+          },
+          {
+            "model": "Kimi-Audio-7B-Instruct",
+            "transcript": "力拔山兮气盖世时不力兮骓不逝",
+            "metric": ""
+          },
+          {
+            "model": "MiniCPM-o 2.6",
+            "transcript": "篱笆山西起，盖石石不离西，追不止。",
+            "metric": ""
+          },
+          {
+            "model": "MOSS-Audio-4B-Instruct",
+            "transcript": "利马神兮既开时，时不利兮骓不逝。",
+            "metric": ""
+          },
+          {
+            "model": "Step-Audio 2 mini",
+            "transcript": "立马山西乞丐时，誓不离席，追不止。",
+            "metric": ""
+          },
+          {
+            "model": "Whisper-large-v3",
+            "transcript": "离把身习即开始,誓不离习,追不知。",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "WHSP-EN-1: Hindu ideology",
+        "audio_url": "assets/samples/whisper/WHSP-EN-1.wav",
+        "transcript": "Does Hindu ideology honor cows?",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "Does Hindu ideology honor cows?",
+            "metric": "0% WER"
+          },
+          {
+            "model": "FireRed-ASR2-LLM",
+            "transcript": "dashing through the snow",
+            "metric": ""
+          },
+          {
+            "model": "Fun-ASR-Nano-2512",
+            "transcript": "Does Hindu ideology on account.",
+            "metric": ""
+          },
+          {
+            "model": "GLM-ASR-Nano-2512",
+            "transcript": "Doesn't do ideology on the count.",
+            "metric": ""
+          },
+          {
+            "model": "Kimi-Audio-7B-Instruct",
+            "transcript": "Doesnt do ideology on the counts.",
+            "metric": ""
+          },
+          {
+            "model": "MiniCPM-o 2.6",
+            "transcript": "Doesn't do ideology on account",
+            "metric": ""
+          },
+          {
+            "model": "MOSS-Audio-4B-Instruct",
+            "transcript": "Dust into ideology on accounts.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "Does into ideology, on accounts.",
+            "metric": ""
+          },
+          {
+            "model": "Step-Audio 2 mini",
+            "transcript": "Doesn't do ideology on accounts.",
+            "metric": ""
+          },
+          {
+            "model": "Whisper-large-v3",
+            "transcript": "Cuts into ideology on accounts.",
+            "metric": ""
+          }
+        ]
+      },
+      {
+        "title": "WHSP-EN-2: Connoisseur / shellfish",
+        "audio_url": "assets/samples/whisper/WHSP-EN-2.wav",
+        "transcript": "A connoisseur will enjoy this shellfish dish.",
+        "comparisons": [
+          {
+            "model": "AmphionASR",
+            "ours": true,
+            "transcript": "A connoisseur will enjoy this shellfish dish.",
+            "metric": "0% WER"
+          },
+          {
+            "model": "FireRed-ASR2-LLM",
+            "transcript": "a connoisseur would have tried this shellfish dish",
+            "metric": ""
+          },
+          {
+            "model": "Fun-ASR-Nano-2512",
+            "transcript": "Accordingly, the survey judged this selfish decision.",
+            "metric": ""
+          },
+          {
+            "model": "GLM-ASR-Nano-2512",
+            "transcript": "A colleague of mine tried this shark fish dish.",
+            "metric": ""
+          },
+          {
+            "model": "Kimi-Audio-7B-Instruct",
+            "transcript": "A colleague served a giant dish of shellfish dish.",
+            "metric": ""
+          },
+          {
+            "model": "MiniCPM-o 2.6",
+            "transcript": "According to Sophia, I tried this shellfish dish.",
+            "metric": ""
+          },
+          {
+            "model": "MOSS-Audio-4B-Instruct",
+            "transcript": "I call myself a childish selfish dish.",
+            "metric": ""
+          },
+          {
+            "model": "Qwen3-ASR-1.7B",
+            "transcript": "At Connie's house, I tried this shellfish dish.",
+            "metric": ""
+          },
+          {
+            "model": "Step-Audio 2 mini",
+            "transcript": "A coney sofa adorned this shellfish dish.",
+            "metric": ""
+          },
+          {
+            "model": "Whisper-large-v3",
+            "transcript": "I got myself a giant shellfish dish.",
+            "metric": ""
+          }
         ]
       }
     ]
