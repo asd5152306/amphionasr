@@ -2,8 +2,7 @@
  * Loads example data from data/examples.json and wires up:
  *  - Language toggle (EN / ZH) via data-i18n attributes
  *  - Tab switching between capabilities
- *  - Example dropdown selection
- *  - Audio player + transcript rendering
+ *  - Renders all samples per capability as comparison tables
  *  - BibTeX copy button
  */
 
@@ -12,6 +11,7 @@
 
   var I18N = window.AMPHION_I18N || { en: {}, zh: {} };
   var currentLang = 'en';
+  var examplesData = { capabilities: {} };
 
   // ---------- i18n ----------
   function t(key, vars) {
@@ -30,42 +30,13 @@
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var key = el.getAttribute('data-i18n');
-      var value = t(key);
-      el.innerHTML = value;
+      el.innerHTML = t(key);
     });
-    // Update toggle button states
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
-    // Re-apply dynamic UI strings
-    refreshDynamicStrings();
-  }
-
-  function refreshDynamicStrings() {
-    // Update select placeholders if no example selected
-    document.querySelectorAll('.example-select').forEach(function (sel) {
-      if (!sel.value) {
-        var cap = sel.getAttribute('data-capability');
-        var items = (examplesData.capabilities && examplesData.capabilities[cap]) || [];
-        var placeholderKey = items.length ? 'ui.select_example' : 'ui.no_examples';
-        var opt = sel.querySelector('option');
-        if (opt) {
-          opt.textContent = items.length
-            ? t(placeholderKey, { n: items.length })
-            : t('ui.no_examples');
-        }
-      }
-    });
-    // Update audio placeholders
-    document.querySelectorAll('.audio-placeholder').forEach(function (el) {
-      if (el.getAttribute('data-has-audio') === 'true') {
-        el.textContent = t('ui.audio_loaded');
-      } else if (el.getAttribute('data-has-audio') === 'false') {
-        el.textContent = t('ui.no_audio_avail');
-      } else {
-        el.textContent = t('ui.no_audio');
-      }
-    });
+    // Re-render sample cards so their dynamic labels follow the new language
+    renderAllSamples();
   }
 
   // ---------- Language toggle buttons ----------
@@ -91,8 +62,6 @@
   });
 
   // ---------- Load examples ----------
-  var examplesData = { capabilities: {} };
-
   function loadExamples() {
     fetch('data/examples.json')
       .then(function (res) {
@@ -101,133 +70,137 @@
       })
       .then(function (data) {
         examplesData = data;
-        populateDropdowns();
-        refreshDynamicStrings();
+        renderAllSamples();
       })
       .catch(function (err) {
         console.warn('[AmphionASR demo] Failed to load examples.json:', err);
-        markDropdownsError();
+        markLoadError();
       });
   }
 
-  function populateDropdowns() {
+  function markLoadError() {
+    document.querySelectorAll('.samples-list').forEach(function (el) {
+      el.innerHTML = '<p class="samples-error">' + escapeHtml(t('ui.examples_not_found')) + '</p>';
+    });
+  }
+
+  // ---------- Render all samples for every capability ----------
+  function renderAllSamples() {
     var caps = examplesData.capabilities || {};
     Object.keys(caps).forEach(function (capKey) {
-      var select = document.querySelector('.example-select[data-capability="' + capKey + '"]');
-      if (!select) return;
+      var container = document.querySelector('.samples-list[data-capability="' + capKey + '"]');
+      if (!container) return;
       var items = caps[capKey] || [];
-      select.innerHTML = '';
-
-      var placeholder = document.createElement('option');
-      placeholder.value = '';
-      placeholder.textContent = items.length
-        ? t('ui.select_example', { n: items.length })
-        : t('ui.no_examples');
-      select.appendChild(placeholder);
-
+      if (!items.length) {
+        container.innerHTML = '<p class="samples-error">' + escapeHtml(t('ui.no_examples')) + '</p>';
+        return;
+      }
+      var html = '';
       items.forEach(function (item, idx) {
-        var opt = document.createElement('option');
-        opt.value = String(idx);
-        opt.textContent = t('ui.sample_label', { n: idx + 1 });
-        select.appendChild(opt);
+        html += renderSampleCard(capKey, item, idx);
       });
-
-      select.addEventListener('change', function () {
-        if (select.value === '') {
-          resetPanel(capKey);
-          return;
-        }
-        var example = items[Number(select.value)];
-        renderExample(capKey, example);
-      });
+      container.innerHTML = html;
     });
   }
 
-  function markDropdownsError() {
-    document.querySelectorAll('.example-select').forEach(function (select) {
-      select.innerHTML = '<option value="">' + t('ui.examples_not_found') + '</option>';
-    });
+  function renderSampleCard(capKey, item, idx) {
+    var label = t('ui.sample_label', { n: idx + 1 });
+    var audioHtml = renderSampleAudio(capKey, item);
+    var extraHtml = renderSampleExtra(capKey, item);
+    var tableHtml = renderComparisonTable(item);
+
+    return (
+      '<div class="sample-card">' +
+        '<div class="sample-head">' +
+          '<div class="sample-label">' + escapeHtml(label) + '</div>' +
+          audioHtml +
+        '</div>' +
+        extraHtml +
+        tableHtml +
+      '</div>'
+    );
   }
 
-  // ---------- Render an example into a panel ----------
-  function renderExample(capKey, example) {
-    var panel = document.querySelector('.tab-panel[data-panel="' + capKey + '"]');
-    if (!panel) return;
-
-    var audioEl = panel.querySelector('.audio-player:not(.small) audio');
-    var audioPlaceholder = panel.querySelector('.audio-player:not(.small) .audio-placeholder');
-    if (audioEl) {
-      if (example.audio_url) {
-        audioEl.src = example.audio_url;
-        audioEl.style.display = '';
-        if (audioPlaceholder) audioPlaceholder.setAttribute('data-has-audio', 'true');
-      } else {
-        audioEl.removeAttribute('src');
-        audioEl.style.display = 'none';
-        if (audioPlaceholder) audioPlaceholder.setAttribute('data-has-audio', 'false');
-      }
+  function renderSampleAudio(capKey, item) {
+    // TS-ASR has enrollment + mixture audio
+    if (capKey === 'tsasr') {
+      var enroll = item.enroll_audio_url
+        ? audioPlayerHtml(item.enroll_audio_url, t('tsasr.enroll'))
+        : '';
+      var mix = item.mixture_audio_url
+        ? audioPlayerHtml(item.mixture_audio_url, t('tsasr.mixture'))
+        : '';
+      return '<div class="sample-audio dual">' + enroll + mix + '</div>';
     }
-
-    if (example.enroll_audio_url) {
-      var enrollEl = panel.querySelector('audio[data-audio="enroll"]');
-      if (enrollEl) enrollEl.src = example.enroll_audio_url;
+    if (item.audio_url) {
+      return '<div class="sample-audio">' + audioPlayerHtml(item.audio_url, t('ui.input_audio')) + '</div>';
     }
-    if (example.mixture_audio_url) {
-      var mixEl = panel.querySelector('audio[data-audio="mixture"]');
-      if (mixEl) mixEl.src = example.mixture_audio_url;
-    }
-
-    setField(panel, 'transcript', example.transcript);
-    setField(panel, 'without_hotword', example.without_hotword);
-    setField(panel, 'with_hotword', example.with_hotword);
-
-    var hotwordsEl = panel.querySelector('[data-field="hotwords"]');
-    if (hotwordsEl) {
-      hotwordsEl.innerHTML = '';
-      var hotwords = example.hotwords || [];
-      if (hotwords.length === 0) {
-        hotwordsEl.innerHTML = '<span class="chip empty">' + t('ui.no_hotwords') + '</span>';
-      } else {
-        hotwords.forEach(function (hw) {
-          var chip = document.createElement('span');
-          chip.className = 'chip';
-          chip.textContent = hw;
-          hotwordsEl.appendChild(chip);
-        });
-      }
-    }
-
-    var degTagEl = panel.querySelector('[data-field="degradation_type"] .tag');
-    if (degTagEl) degTagEl.textContent = example.degradation_type || '—';
-
-    renderComparisons(panel, example);
-
-    refreshDynamicStrings();
+    return '';
   }
 
-  function renderComparisons(panel, example) {
-    var tbody = panel.querySelector('[data-field="comparisons"]');
-    if (!tbody) return;
-    var comparisons = example.comparisons || [];
-    if (comparisons.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="empty-row">' + t('ui.no_comparison') + '</td></tr>';
-      return;
+  function audioPlayerHtml(src, label) {
+    return (
+      '<div class="sample-audio-item">' +
+        (label ? '<span class="audio-label">' + escapeHtml(label) + '</span>' : '') +
+        '<audio controls preload="metadata" src="' + escapeHtml(src) + '"></audio>' +
+      '</div>'
+    );
+  }
+
+  function renderSampleExtra(capKey, item) {
+    if (capKey === 'hotword') {
+      var chips = (item.hotwords || []).map(function (hw) {
+        return '<span class="chip">' + escapeHtml(hw) + '</span>';
+      }).join('');
+      return (
+        '<div class="sample-hotwords">' +
+          '<span class="sample-hotwords-label">' + escapeHtml(t('hotword.retrieved')) + '</span>' +
+          '<span class="hotword-chips">' + (chips || '<span class="chip empty">' + escapeHtml(t('ui.no_hotwords')) + '</span>') + '</span>' +
+        '</div>'
+      );
     }
-    var html = '';
-    comparisons.forEach(function (row) {
+    if (capKey === 'degradation') {
+      return (
+        '<div class="sample-degradation">' +
+          '<span class="sample-degradation-label">' + escapeHtml(t('degradation.type')) + '</span>' +
+          '<span class="tag">' + escapeHtml(item.degradation_type || '—') + '</span>' +
+        '</div>'
+      );
+    }
+    return '';
+  }
+
+  function renderComparisonTable(item) {
+    var rows = item.comparisons || [];
+    if (!rows.length) {
+      return '<p class="samples-error">' + escapeHtml(t('ui.no_comparison')) + '</p>';
+    }
+    var body = rows.map(function (row) {
       var isOurs = row.ours === true;
       var rowClass = isOurs ? 'row-ours' : '';
-      var metricClass = (isOurs || row.best === true) ? 'col-metric metric-best' : 'col-metric';
-      var metricValue = row.metric || '—';
-      var oursTag = isOurs ? ' <span class="ours-tag">' + t('ui.ours') + '</span>' : '';
+      var oursTag = isOurs ? ' <span class="ours-tag">' + escapeHtml(t('ui.ours')) + '</span>' : '';
       var transcript = row.transcript || '—';
-      html += '<tr class="' + rowClass + '">';
-      html += '<td class="col-model">' + escapeHtml(row.model || '—') + oursTag + '</td>';
-      html += '<td class="col-result">' + escapeHtml(transcript) + '</td>';
-      html += '<td class="' + metricClass + '">' + escapeHtml(metricValue) + '</td>';
-      html += '</tr>';
-    });
-    tbody.innerHTML = html;
+      return (
+        '<tr class="' + rowClass + '">' +
+          '<td class="col-model">' + escapeHtml(row.model || '—') + oursTag + '</td>' +
+          '<td class="col-result">' + escapeHtml(transcript) + '</td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    return (
+      '<div class="cmp-table-wrap">' +
+        '<table class="cmp-table">' +
+          '<thead>' +
+            '<tr>' +
+              '<th class="col-model">' + escapeHtml(t('ui.col_model')) + '</th>' +
+              '<th class="col-result">' + escapeHtml(t('ui.col_result')) + '</th>' +
+            '</tr>' +
+          '</thead>' +
+          '<tbody>' + body + '</tbody>' +
+        '</table>' +
+      '</div>'
+    );
   }
 
   function escapeHtml(str) {
@@ -238,26 +211,6 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;');
-  }
-
-  function setField(panel, fieldName, value) {
-    var el = panel.querySelector('[data-field="' + fieldName + '"]');
-    if (el) el.textContent = value || '—';
-  }
-
-  function resetPanel(capKey) {
-    var panel = document.querySelector('.tab-panel[data-panel="' + capKey + '"]');
-    if (!panel) return;
-    panel.querySelectorAll('audio').forEach(function (a) { a.removeAttribute('src'); });
-    panel.querySelectorAll('[data-field]').forEach(function (el) { el.textContent = '—'; });
-    panel.querySelectorAll('.audio-placeholder').forEach(function (el) {
-      el.removeAttribute('data-has-audio');
-    });
-    var hotwordsEl = panel.querySelector('[data-field="hotwords"]');
-    if (hotwordsEl) hotwordsEl.innerHTML = t('ui.no_hotwords');
-    var compTbody = panel.querySelector('[data-field="comparisons"]');
-    if (compTbody) compTbody.innerHTML = '<tr><td colspan="3" class="empty-row">—</td></tr>';
-    refreshDynamicStrings();
   }
 
   // ---------- BibTeX copy button ----------

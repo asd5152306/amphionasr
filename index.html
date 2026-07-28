@@ -57,28 +57,6 @@
         top-<em>K</em> hotword subset from a large candidate vocabulary and
         inserts it into the prompt line before a single ASR forward pass.
       </p>
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-value">2.0B</div>
-          <div class="stat-label" data-i18n="overview.stat1.label">Total Parameters</div>
-          <div class="stat-detail" data-i18n="overview.stat1.detail">1.7B LLM + 300M AuT encoder + 2.6M retrieval adapters</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">94%+</div>
-          <div class="stat-label" data-i18n="overview.stat2.label">Recall@50 (Hotword Retrieval)</div>
-          <div class="stat-detail" data-i18n="overview.stat2.detail">On CommonVoice ZH/EN hotword splits</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">55% / 37%</div>
-          <div class="stat-label" data-i18n="overview.stat3.label">Entity Error Reduction</div>
-          <div class="stat-detail" data-i18n="overview.stat3.detail">Mandarin / English on GigaSpeechBench</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">1.37 / 3.25 ms</div>
-          <div class="stat-label" data-i18n="overview.stat4.label">Online Retrieval Overhead</div>
-          <div class="stat-detail" data-i18n="overview.stat4.detail">Median, English / Mandarin, single-request steady-state</div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -101,227 +79,53 @@
 
       <!-- Hotword ASR -->
       <div class="tab-panel active" data-panel="hotword">
-        <div class="panel-grid">
-          <div class="panel-info">
-            <h3 data-i18n="hotword.title">Hotword-Conditioned ASR</h3>
-            <p class="prompt-template">
-              <code>Transcribe the following audio.[Hotwords:...].{speech}</code>
-            </p>
-            <p data-i18n="hotword.desc">
-              A fine-grained dual encoder retrieves a top-<em>K</em> subset from
-              a large candidate vocabulary before decoding. The selected
-              hotwords are inserted into the prompt line, biasing the decoder
-              toward rare or domain-specific entities without any
-              architectural change.
-            </p>
-            <div class="example-controls">
-              <select class="example-select" data-capability="hotword">
-                <option value="" data-i18n="ui.loading">Loading examples...</option>
-              </select>
-            </div>
-          </div>
-          <div class="panel-demo">
-            <div class="audio-player">
-              <div class="audio-placeholder" data-i18n="ui.no_audio">No audio loaded</div>
-              <audio controls preload="metadata"></audio>
-            </div>
-            <div class="retrieved-hotwords">
-              <div class="transcript-label" data-i18n="hotword.retrieved">Retrieved Top-K Hotwords</div>
-              <div class="hotword-chips" data-field="hotwords">—</div>
-            </div>
-            <div class="transcript-box compare">
-              <div class="compare-col">
-                <div class="transcript-label" data-i18n="hotword.without">Without Hotwords</div>
-                <div class="transcript-text" data-field="without_hotword">—</div>
-              </div>
-              <div class="compare-col highlight">
-                <div class="transcript-label" data-i18n="hotword.with">With Hotwords</div>
-                <div class="transcript-text" data-field="with_hotword">—</div>
-              </div>
-            </div>
-            <div class="model-comparison">
-              <div class="transcript-label" data-i18n="ui.model_comparison">Model Comparison</div>
-              <div class="comparison-table-wrap">
-                <table class="comparison-table">
-                  <thead>
-                    <tr>
-                      <th data-i18n="ui.col_model">Model</th>
-                      <th data-i18n="ui.col_result">Transcript</th>
-                      <th data-i18n="ui.col_metric">Metric</th>
-                    </tr>
-                  </thead>
-                  <tbody data-field="comparisons">
-                    <tr><td colspan="3" class="empty-row">—</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="panel-info">
+          <h3 data-i18n="hotword.title">Hotword-Conditioned ASR</h3>
+          <p data-i18n="hotword.desc">
+            Retrieves a top-K hotword subset from a large candidate vocabulary
+            and inserts it into the prompt, biasing recognition toward rare or
+            domain-specific entities.
+          </p>
         </div>
+        <div class="samples-list" data-capability="hotword"></div>
       </div>
 
       <!-- Target-Speaker ASR -->
       <div class="tab-panel" data-panel="tsasr">
-        <div class="panel-grid">
-          <div class="panel-info">
-            <h3 data-i18n="tsasr.title">Target-Speaker ASR (TS-ASR)</h3>
-            <p class="prompt-template">
-              <code>Given the speaker's voice:{enroll} Transcribe what this speaker says in the following audio.{speech}</code>
-            </p>
-            <p data-i18n="tsasr.desc">
-              Given a short enrollment utterance of a target speaker, the model
-              transcribes only that speaker's content from overlapping speech,
-              rather than concatenating all talkers. Both audio segments share
-              the same AuT encoder path and reach the LLM as two ordered
-              audio-embedding spans.
-            </p>
-            <div class="example-controls">
-              <select class="example-select" data-capability="tsasr">
-                <option value="" data-i18n="ui.loading">Loading examples...</option>
-              </select>
-            </div>
-          </div>
-          <div class="panel-demo">
-            <div class="dual-audio">
-              <div class="audio-player small">
-                <div class="audio-label" data-i18n="tsasr.enroll">Enrollment (target speaker)</div>
-                <div class="audio-placeholder" data-i18n="ui.no_audio">No audio loaded</div>
-                <audio controls preload="metadata" data-audio="enroll"></audio>
-              </div>
-              <div class="audio-player small">
-                <div class="audio-label" data-i18n="tsasr.mixture">Mixture to transcribe</div>
-                <div class="audio-placeholder" data-i18n="ui.no_audio">No audio loaded</div>
-                <audio controls preload="metadata" data-audio="mixture"></audio>
-              </div>
-            </div>
-            <div class="transcript-box">
-              <div class="transcript-label" data-i18n="tsasr.transcript">Target Speaker Transcript</div>
-              <div class="transcript-text" data-field="transcript">—</div>
-            </div>
-            <div class="model-comparison">
-              <div class="transcript-label" data-i18n="ui.model_comparison">Model Comparison</div>
-              <div class="comparison-table-wrap">
-                <table class="comparison-table">
-                  <thead>
-                    <tr>
-                      <th data-i18n="ui.col_model">Model</th>
-                      <th data-i18n="ui.col_result">Transcript</th>
-                      <th data-i18n="ui.col_metric">Metric</th>
-                    </tr>
-                  </thead>
-                  <tbody data-field="comparisons">
-                    <tr><td colspan="3" class="empty-row">—</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="panel-info">
+          <h3 data-i18n="tsasr.title">Target-Speaker ASR (TS-ASR)</h3>
+          <p data-i18n="tsasr.desc">
+            Given a short enrollment utterance of a target speaker, transcribes
+            only that speaker's content from overlapping speech rather than
+            concatenating all talkers.
+          </p>
         </div>
+        <div class="samples-list" data-capability="tsasr"></div>
       </div>
 
       <!-- Degradation-Robust ASR -->
       <div class="tab-panel" data-panel="degradation">
-        <div class="panel-grid">
-          <div class="panel-info">
-            <h3 data-i18n="degradation.title">Degradation-Robust ASR</h3>
-            <p class="prompt-template">
-              <code>Transcribe the following audio.{speech}</code>
-            </p>
-            <p data-i18n="degradation.desc">
-              Handles real-world capture conditions such as far-field pickup,
-              additive noise, reverberation, obstruction, echo, recording
-              coloration, electronic distortion, and transmission dropout.
-              Evaluated on Voice-in-the-Wild-Bench (16 subsets, 5,000 clips);
-              AmphionASR records the lowest WER on 8 of 16 degradation subsets.
-            </p>
-            <div class="example-controls">
-              <select class="example-select" data-capability="degradation">
-                <option value="" data-i18n="ui.loading">Loading examples...</option>
-              </select>
-            </div>
-          </div>
-          <div class="panel-demo">
-            <div class="audio-player">
-              <div class="audio-placeholder" data-i18n="ui.no_audio">No audio loaded</div>
-              <audio controls preload="metadata"></audio>
-            </div>
-            <div class="degradation-tag" data-field="degradation_type">
-              <span class="transcript-label" data-i18n="degradation.type">Degradation Type:</span>
-              <span class="tag">—</span>
-            </div>
-            <div class="transcript-box">
-              <div class="transcript-label" data-i18n="degradation.transcript">Robust Transcript</div>
-              <div class="transcript-text" data-field="transcript">—</div>
-            </div>
-            <div class="model-comparison">
-              <div class="transcript-label" data-i18n="ui.model_comparison">Model Comparison</div>
-              <div class="comparison-table-wrap">
-                <table class="comparison-table">
-                  <thead>
-                    <tr>
-                      <th data-i18n="ui.col_model">Model</th>
-                      <th data-i18n="ui.col_result">Transcript</th>
-                      <th data-i18n="ui.col_metric">Metric</th>
-                    </tr>
-                  </thead>
-                  <tbody data-field="comparisons">
-                    <tr><td colspan="3" class="empty-row">—</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="panel-info">
+          <h3 data-i18n="degradation.title">Degradation-Robust ASR</h3>
+          <p data-i18n="degradation.desc">
+            Handles real-world capture conditions such as far-field pickup,
+            additive noise, reverberation, echo, recording coloration, and
+            transmission dropout.
+          </p>
         </div>
+        <div class="samples-list" data-capability="degradation"></div>
       </div>
 
       <!-- Whispered-Speech ASR -->
       <div class="tab-panel" data-panel="whisper">
-        <div class="panel-grid">
-          <div class="panel-info">
-            <h3 data-i18n="whisper.title">Whispered-Speech ASR</h3>
-            <p class="prompt-template">
-              <code>Transcribe the following whispered audio.{speech}</code>
-            </p>
-            <p data-i18n="whisper.desc">
-              Transcribes atypical, low-energy whispered phonation that deviates
-              from normal speech. AmphionASR obtains the lowest error on both
-              the Mandarin wEar (0.58% CER) and English WTIMIT (6.11% WER)
-              whispered-speech tests.
-            </p>
-            <div class="example-controls">
-              <select class="example-select" data-capability="whisper">
-                <option value="" data-i18n="ui.loading">Loading examples...</option>
-              </select>
-            </div>
-          </div>
-          <div class="panel-demo">
-            <div class="audio-player">
-              <div class="audio-placeholder" data-i18n="ui.no_audio">No audio loaded</div>
-              <audio controls preload="metadata"></audio>
-            </div>
-            <div class="transcript-box">
-              <div class="transcript-label" data-i18n="whisper.transcript">Transcript</div>
-              <div class="transcript-text" data-field="transcript">—</div>
-            </div>
-            <div class="model-comparison">
-              <div class="transcript-label" data-i18n="ui.model_comparison">Model Comparison</div>
-              <div class="comparison-table-wrap">
-                <table class="comparison-table">
-                  <thead>
-                    <tr>
-                      <th data-i18n="ui.col_model">Model</th>
-                      <th data-i18n="ui.col_result">Transcript</th>
-                      <th data-i18n="ui.col_metric">Metric</th>
-                    </tr>
-                  </thead>
-                  <tbody data-field="comparisons">
-                    <tr><td colspan="3" class="empty-row">—</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="panel-info">
+          <h3 data-i18n="whisper.title">Whispered-Speech ASR</h3>
+          <p data-i18n="whisper.desc">
+            Transcribes atypical, low-energy whispered phonation that deviates
+            from normal speech.
+          </p>
         </div>
+        <div class="samples-list" data-capability="whisper"></div>
       </div>
     </div>
   </section>
