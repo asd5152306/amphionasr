@@ -270,6 +270,29 @@ code {
   font-style: italic;
 }
 
+.hero-teaser-img {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  display: block;
+  margin: 0 auto;
+}
+
+.arch-figure {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.arch-figure-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
 /* ===================== Sections ===================== */
 .section {
   padding: 80px 0;
